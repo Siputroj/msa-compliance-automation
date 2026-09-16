@@ -77,13 +77,13 @@ graph TD
 
 ### A. Source Code (`backend/src/`)
 
-#### 1. [chunker.py](file:///Users/siputroj/Desktop/react/MSA-Compliance-Automation/backend/src/chunker.py)
+#### 1. [chunker.py](file:///Users/siputroj/Desktop/react/msa-compliance-automation/backend/src/chunker.py)
 *   **Purpose**: Preprocesses raw text and divides it into segments (chunks). Since LLMs have context size limits and vector search works best with concise text, chunking is crucial.
 *   **Key Functions**:
     *   `clean_text(text: str) -> str`: Standardizes newlines and spaces, removing duplicate empty lines while preserving logical double-newlines (which separate section paragraphs).
     *   `split_text(text: str) -> List[Dict[str, Any]]`: Recursively splits the document. It attempts to split at logical boundaries first (double-newlines for paragraphs, single newlines, then sentence periods, then spaces for words) so text segments don't get cut in the middle of a sentence. It implements a sliding window using a custom character overlap (`chunk_overlap`) to maintain context between consecutive chunks.
 
-#### 2. [vector_store.py](file:///Users/siputroj/Desktop/react/MSA-Compliance-Automation/backend/src/vector_store.py)
+#### 2. [vector_store.py](file:///Users/siputroj/Desktop/react/msa-compliance-automation/backend/src/vector_store.py)
 *   **Purpose**: Acts as the semantic index. It converts text chunks into vector embeddings and saves them inside ChromaDB. Later, it searches for text semantically related to a rule description.
 *   **Key Functions**:
     *   `__init__()`: Initializes the persistent ChromaDB client (`data/db/`) and downloads/loads the local embedding model (`all-MiniLM-L6-v2`), which converts raw text to 384-dimensional vector points.
@@ -91,7 +91,7 @@ graph TD
     *   `search_relevant_chunks(contract_name: str, query: str, limit: int = 3)`: Performs a cosine similarity vector search within ChromaDB, filtering strictly by the metadata tag `contract_name` to retrieve the `limit` (default: 3) most relevant paragraphs for a specific compliance rule.
     *   `delete_contract(contract_name: str)`: Cleans up the database by deleting all vector records associated with a contract once its audit report is completed, ensuring storage footprint remains small.
 
-#### 3. [compliance_engine.py](file:///Users/siputroj/Desktop/react/MSA-Compliance-Automation/backend/src/compliance_engine.py)
+#### 3. [compliance_engine.py](file:///Users/siputroj/Desktop/react/msa-compliance-automation/backend/src/compliance_engine.py)
 *   **Purpose**: The central controller orchestrating the entire RAG flow. It reads configuration rules, loads the local/fallback LLM, performs searches, prompts the LLM to write audits, and outputs the final structured report.
 *   **Key Functions**:
     *   `__init__()`: Loads rules from config, registers the Chunker and Vector Store, and flags whether to execute in CPU/Dry-run simulation mode or hardware-accelerated GPU inference.
@@ -101,7 +101,7 @@ graph TD
     *   `_simulate_rule_evaluation(...)`: A fast heuristics-based dry-run engine that evaluates compliance using regex and keyword lookups. Essential for local pipeline testing without loading large weights.
     *   `analyze_contract_text(contract_name: str, text: str) -> Dict[str, Any]`: The main entry-point execution orchestrator. Chunks the text $\rightarrow$ uploads to database $\rightarrow$ loops through rules to query relevant segments $\rightarrow$ runs evaluations $\rightarrow$ compiles the compliance summary $\rightarrow$ triggers database deletion cleanup.
 
-#### 4. [main.py](file:///Users/siputroj/Desktop/react/MSA-Compliance-Automation/backend/src/main.py)
+#### 4. [main.py](file:///Users/siputroj/Desktop/react/msa-compliance-automation/backend/src/main.py)
 *   **Purpose**: The FastAPI Web API Server that connects your backend to a React or Vue frontend.
 *   **Key Endpoints**:
     *   `@app.on_event("startup")`: Initializes the global engine.

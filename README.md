@@ -20,7 +20,7 @@ This project contains a high-fidelity **Next.js 15 App Router** frontend dashboa
 ## Directory Structure
 
 ```
-MSA-Compliance-Automation/
+msa-compliance-automation/
 ├── backend/
 │   ├── config/
 │   │   └── rules.json          # Compliance policy rule definitions (Delaware Law, etc.)
@@ -106,7 +106,7 @@ python evaluate_rag_performance.py --samples 3
 
 #### Benchmark Results
 
-The pipeline's retrieval and extraction accuracy is measured against the gold-standard annotated CUAD v1 dataset using [evaluate_rag_performance.py](file:///Users/siputroj/Desktop/react/MSA-Compliance-Automation/backend/evaluate_rag_performance.py) (sample test size = 3, seed = 42, using the local GPU-accelerated Qwen 2.5 7B Instruct LLM via Apple Silicon MLX):
+The pipeline's retrieval and extraction accuracy is measured against the gold-standard annotated CUAD v1 dataset using [evaluate_rag_performance.py](file:///Users/siputroj/Desktop/react/msa-compliance-automation/backend/evaluate_rag_performance.py) (sample test size = 3, seed = 42, using the local GPU-accelerated Qwen 2.5 7B Instruct LLM via Apple Silicon MLX):
 
 | Config ID | Parent Chunk Size | Overlap | Top-K | Avg F1-Score | Avg Exact Match |
 |-----------|-------------------|---------|-------|--------------|-----------------|

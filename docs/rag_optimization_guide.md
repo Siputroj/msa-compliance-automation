@@ -69,20 +69,20 @@ Achieving high F1 and EM metrics in legal document extraction requires balancing
     *   *Large chunks* (e.g., 2000 characters) capture complete clauses but muddy the vector space, leading to less precise similarity matches.
     *   *Small chunks* (e.g., 400 characters) generate high-precision vector matches but cut legal sentences in half, causing the LLM to generate incomplete clauses (lowering F1 and EM).
 *   **The Parent-Child Solution**:
-    1.  **Chunking**: Slice the text into small **Child Chunks** (~400 characters) and large overlapping **Parent Chunks** (~2000 characters). This is implemented in `ContractChunker.split_text_parent_child()` in [chunker.py](file:///Users/siputroj/Desktop/react/MSA-Compliance-Automation/backend/src/chunker.py).
-    2.  **Indexing**: Embed and insert the *child* chunks into ChromaDB. Attach the corresponding *parent* chunk text, start character index, and end character index as metadata properties of the child vector. This is implemented in `ContractVectorStore.add_contract_chunks()` in [vector_store.py](file:///Users/siputroj/Desktop/react/MSA-Compliance-Automation/backend/src/vector_store.py).
-    3.  **Retrieval**: When a query matches a child chunk, fetch its metadata and return the complete **parent chunk** text to the LLM. This is implemented in `ContractVectorStore.search_relevant_chunks()` in [vector_store.py](file:///Users/siputroj/Desktop/react/MSA-Compliance-Automation/backend/src/vector_store.py).
+    1.  **Chunking**: Slice the text into small **Child Chunks** (~400 characters) and large overlapping **Parent Chunks** (~2000 characters). This is implemented in `ContractChunker.split_text_parent_child()` in [chunker.py](file:///Users/siputroj/Desktop/react/msa-compliance-automation/backend/src/chunker.py).
+    2.  **Indexing**: Embed and insert the *child* chunks into ChromaDB. Attach the corresponding *parent* chunk text, start character index, and end character index as metadata properties of the child vector. This is implemented in `ContractVectorStore.add_contract_chunks()` in [vector_store.py](file:///Users/siputroj/Desktop/react/msa-compliance-automation/backend/src/vector_store.py).
+    3.  **Retrieval**: When a query matches a child chunk, fetch its metadata and return the complete **parent chunk** text to the LLM. This is implemented in `ContractVectorStore.search_relevant_chunks()` in [vector_store.py](file:///Users/siputroj/Desktop/react/msa-compliance-automation/backend/src/vector_store.py).
 *   **Why it increases F1/EM**: The retriever matching remains highly granular (matching specific rules to small child paragraphs), while the LLM receives the full paragraph context necessary to extract clean, whole clauses.
 
 ### B. Strict Verbatim Prompt Constraints (Fully Implemented)
 *   **The Problem**: Default LLM generation models tend to summarize, rephrase, or add preamble formatting (e.g., *"Here is the extracted clause..."*). Any variation in word boundaries immediately degrades F1 and EM.
-*   **The Solution**: We inject explicit instructions in the System template inside [compliance_engine.py](file:///Users/siputroj/Desktop/react/MSA-Compliance-Automation/backend/src/compliance_engine.py):
+*   **The Solution**: We inject explicit instructions in the System template inside [compliance_engine.py](file:///Users/siputroj/Desktop/react/msa-compliance-automation/backend/src/compliance_engine.py):
     1.  Instruct the model to copy matching clauses **word-for-word, verbatim** from the context.
     2.  Strictly prohibit summarizing, paraphrasing, or introducing text.
     3.  Treat absence of context as an empty string `""` response.
 
 ### C. Benchmarking & Parameter Sweeps
-The pipeline is verified using a local evaluation script in [evaluate_rag_performance.py](file:///Users/siputroj/Desktop/react/MSA-Compliance-Automation/backend/evaluate_rag_performance.py). It runs a hyperparameter sweep over different configuration settings:
+The pipeline is verified using a local evaluation script in [evaluate_rag_performance.py](file:///Users/siputroj/Desktop/react/msa-compliance-automation/backend/evaluate_rag_performance.py). It runs a hyperparameter sweep over different configuration settings:
 *   **Configuration 1**: Chunk Size 1000, Overlap 100, Top K 3
 *   **Configuration 2**: Chunk Size 2000, Overlap 200, Top K 3
 *   **Configuration 3**: Chunk Size 2000, Overlap 200, Top K 5

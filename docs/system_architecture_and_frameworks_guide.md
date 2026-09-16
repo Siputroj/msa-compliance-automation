@@ -77,14 +77,14 @@ sequenceDiagram
 | Step | Action | Executing Function | Resides In File |
 | :--- | :--- | :--- | :--- |
 | **1** | Uploader triggers upload request | Frontend file handler | `frontend/src/components/ContractUpload.tsx` |
-| **2** | API Controller receives request | Route `POST /api/analyze/file` | [main.py](file:///Users/siputroj/Desktop/react/MSA-Compliance-Automation/backend/src/main.py#L58-L78) |
-| **3** | Core pipeline orchestration begins | `ComplianceEngine.analyze_contract_text()` | [compliance_engine.py](file:///Users/siputroj/Desktop/react/MSA-Compliance-Automation/backend/src/compliance_engine.py#L351-L411) |
-| **4** | Splitting text into parents and children | `ContractChunker.split_text_parent_child()` | [chunker.py](file:///Users/siputroj/Desktop/react/MSA-Compliance-Automation/backend/src/chunker.py#L78-L135) |
-| **5** | Vector DB persistence & indexing | `ContractVectorStore.add_contract_chunks()` | [vector_store.py](file:///Users/siputroj/Desktop/react/MSA-Compliance-Automation/backend/src/vector_store.py#L36-L70) |
-| **6** | Searching vector database for context | `ContractVectorStore.search_relevant_chunks()` | [vector_store.py](file:///Users/siputroj/Desktop/react/MSA-Compliance-Automation/backend/src/vector_store.py#L72-L109) |
-| **7** | Running LangChain RAG pipeline chain | `ComplianceEngine.evaluate_rule()` | [compliance_engine.py](file:///Users/siputroj/Desktop/react/MSA-Compliance-Automation/backend/src/compliance_engine.py#L264-L349) |
-| **8** | Calling local Apple Silicon MLX Model | `CustomMLXChatModel._generate()` | [compliance_engine.py](file:///Users/siputroj/Desktop/react/MSA-Compliance-Automation/backend/src/compliance_engine.py#L173-L215) |
-| **9** | Deleting session index to free disk space | `ContractVectorStore.delete_contract()` | [vector_store.py](file:///Users/siputroj/Desktop/react/MSA-Compliance-Automation/backend/src/vector_store.py#L111-L122) |
+| **2** | API Controller receives request | Route `POST /api/analyze/file` | [main.py](file:///Users/siputroj/Desktop/react/msa-compliance-automation/backend/src/main.py#L58-L78) |
+| **3** | Core pipeline orchestration begins | `ComplianceEngine.analyze_contract_text()` | [compliance_engine.py](file:///Users/siputroj/Desktop/react/msa-compliance-automation/backend/src/compliance_engine.py#L351-L411) |
+| **4** | Splitting text into parents and children | `ContractChunker.split_text_parent_child()` | [chunker.py](file:///Users/siputroj/Desktop/react/msa-compliance-automation/backend/src/chunker.py#L78-L135) |
+| **5** | Vector DB persistence & indexing | `ContractVectorStore.add_contract_chunks()` | [vector_store.py](file:///Users/siputroj/Desktop/react/msa-compliance-automation/backend/src/vector_store.py#L36-L70) |
+| **6** | Searching vector database for context | `ContractVectorStore.search_relevant_chunks()` | [vector_store.py](file:///Users/siputroj/Desktop/react/msa-compliance-automation/backend/src/vector_store.py#L72-L109) |
+| **7** | Running LangChain RAG pipeline chain | `ComplianceEngine.evaluate_rule()` | [compliance_engine.py](file:///Users/siputroj/Desktop/react/msa-compliance-automation/backend/src/compliance_engine.py#L264-L349) |
+| **8** | Calling local Apple Silicon MLX Model | `CustomMLXChatModel._generate()` | [compliance_engine.py](file:///Users/siputroj/Desktop/react/msa-compliance-automation/backend/src/compliance_engine.py#L173-L215) |
+| **9** | Deleting session index to free disk space | `ContractVectorStore.delete_contract()` | [vector_store.py](file:///Users/siputroj/Desktop/react/msa-compliance-automation/backend/src/vector_store.py#L111-L122) |
 
 ---
 
